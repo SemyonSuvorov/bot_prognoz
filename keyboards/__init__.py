@@ -1,0 +1,1 @@
+from keyboards.client_kb import send_loc_kb
