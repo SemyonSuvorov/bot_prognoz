@@ -17,7 +17,7 @@ async def command_start(message: types.message):
 
 
 async def get_city(message: types.message):
-    await message.answer('Введите название города:', reply_markup=ReplyKeyboardRemove())
+    await message.answer('Введите название города:')
 
 
 async def city_info(message: types.message):
@@ -86,6 +86,6 @@ async def handle_location(message: types.Message):
 
 def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(command_start, commands=['start', 'help'])
-    dp.register_message_handler(get_city, commands=['Отправить_город'])
+    dp.register_message_handler(get_city, lambda message: 'Отправить город' in message.text)
     dp.register_message_handler(handle_location, content_types=['location'])
     dp.register_message_handler(city_info)
