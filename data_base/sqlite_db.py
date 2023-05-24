@@ -1,6 +1,8 @@
 import sqlite3 as sq
 
 
+
+
 def sql_start():
     global cur, base
     base = sq.connect('clothes.db')
@@ -8,11 +10,13 @@ def sql_start():
     
     if base:
         print('Data base connected!')
-    base.execute('CREATE TABLE IF NOT EXISTS menu(img TEXT, name TEXT PRIMARY KEY,\
-                 description TEXT, price TEXT)')
-    base.commit()
 
 async def sql_add_command(state):
     async with state.proxy() as data:
-        cur.execute('INSERT INTO menu VALUES (?, ?, ?, ?)', tuple(data.values()))
+        values = tuple(data.values())
+        cur.execute('SELECT MAX(id) FROM shoes')
+        id = cur.fetchall()[0][0] + 1
+        values = id, *values
+        cur.execute('INSERT INTO shoes VALUES (?, ?, ?, ?, ?, ?, ?)', values)
+
         base.commit()

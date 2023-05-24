@@ -1,4 +1,5 @@
 from aiogram import types, Dispatcher
+from aiogram.dispatcher.filters import Text
 from create_bot import bot, open_weather_token
 from keyboards.client_kb import send_loc_kb
 from aiogram.types import ReplyKeyboardRemove
@@ -86,6 +87,6 @@ async def handle_location(message: types.Message):
 
 def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(command_start, commands=['start', 'help'])
-    dp.register_message_handler(get_city, lambda message: 'Отправить город' in message.text)
+    dp.register_message_handler(get_city, Text(equals='Отправить город', ignore_case=True))
     dp.register_message_handler(handle_location, content_types=['location'])
     dp.register_message_handler(city_info)
