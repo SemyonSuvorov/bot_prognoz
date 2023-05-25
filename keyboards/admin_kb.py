@@ -8,6 +8,7 @@ button_case_admin = ReplyKeyboardMarkup(resize_keyboard=True).add(button_load, b
 colorkb = InlineKeyboardMarkup(row_width=4).add(InlineKeyboardButton(text='\U0001F3A9', callback_data='color_black'),
                                                 InlineKeyboardButton(text='\U0001F407', callback_data='color_white'),
                                                 InlineKeyboardButton(text='\U0001F43A', callback_data='color_grey'),
+                                                InlineKeyboardButton(text='\U0001F36A', callback_data='color_brown'),
                                                 InlineKeyboardButton(text='\U0001F339', callback_data='color_red'),
                                                 InlineKeyboardButton(text='\U0001F338', callback_data='color_pink'),
                                                 InlineKeyboardButton(text='\U0001F383', callback_data='color_orange'),
