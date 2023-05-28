@@ -127,7 +127,7 @@ async def city_info_clothes(message: types.Message, state: FSMContext):
         async with state.proxy() as info:
             info['city'] = city
             info['weather'] = feels_like
-            info['description'] = weather_description
+            info['description'] = str.lower(weather_description)
         await message.reply('Пожалуйста, выберите желаемый цвет:', reply_markup=admin_kb.colorkb)
         await FSMClient2.next()
     except:
@@ -138,10 +138,10 @@ async def get_color_clothes(callback : types.CallbackQuery, state: FSMContext):
         info['color'] = callback.data.split('_')[1]
         values = tuple(info.values())       
         
-        if values[2] in code_to_smile:
-            wd = code_to_smile[values[2]]
+        if values[2].title() in code_to_smile:
+            wd = code_to_smile[values[2].title()]
         else:
-            wd = values[2]       
+            wd = values[2].title()      
     try:
         await callback.answer()
         await bot.send_photo(callback.from_user.id, await sqlite_db.sql_select(state))

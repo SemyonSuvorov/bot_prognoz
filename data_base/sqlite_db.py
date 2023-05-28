@@ -22,9 +22,9 @@ async def sql_add_command(state):
 async def sql_select(state):
     try:
         async with state.proxy() as data:    
-            values = tuple(data.values())       
-            cur.execute(f'SELECT photo FROM shoes WHERE ? >= min_temp AND ? <=max_temp AND color LIKE ? \
-                        ORDER BY RANDOM() LIMIT 1', (values[1], values[1], values[3]))
+            values = tuple(data.values())    
+            cur.execute("SELECT photo FROM shoes WHERE ? >= min_temp AND ? <=max_temp AND color LIKE ?\
+                        AND instr(weather, ?) ORDER BY RANDOM() LIMIT 1", (values[1], values[1], values[3], values[2]))
             img = cur.fetchall()[0][0]
             return img
     except:
