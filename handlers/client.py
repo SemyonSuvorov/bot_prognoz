@@ -112,6 +112,27 @@ async def clothes_choice(callback: types.CallbackQuery):
     await bot.send_message(callback.from_user.id, 'Вы можете написать название города, либо отправить свою геолокацию:', reply_markup=client_kb.send_loc_kb)
     await FSMClient2.start.set()
 
+async def clothes_get_location(message: types.Message, state: FSMContext):
+    lat = message.location.latitude
+    lon = message.location.longitude
+    await bot.send_message(message.from_user.id, 'Ожидайте...', reply_markup=ReplyKeyboardRemove())
+    try:
+        r = requests.get(
+            f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={open_weather_token}&"
+            f"units=metric")
+        data = r.json()
+        weather_description = data["weather"][0]["main"]
+        city = data["name"]
+        feels_like = data["main"]["feels_like"]
+        async with state.proxy() as info:
+            info['city'] = city
+            info['weather'] = feels_like
+            info['description'] = str.lower(weather_description)
+        await message.reply('Пожалуйста, выберите желаемый цвет:', reply_markup=admin_kb.colorkb)
+        await FSMClient2.color.set()
+    except:
+        await message.reply("\U00002620Некорректно отправлена геолокация\U00002620")
+
 async def get_city_clothes(message: types.message):
     await bot.send_message(message.from_user.id, 'Введите название города:')
     await FSMClient2.next()   
@@ -165,6 +186,7 @@ def register_handlers_client(dp: Dispatcher):
     # ПРОГНОЗ ОДЕЖДЫ
     dp.register_callback_query_handler(clothes_choice, Text(equals='clothes'))
     dp.register_message_handler(get_city_clothes, Text(equals='Отправить город'), state=FSMClient2.start)
+    dp.register_message_handler(clothes_get_location, content_types=['location'], state=FSMClient2.start)
     dp.register_message_handler(city_info_clothes, state=FSMClient2.city)
     dp.register_callback_query_handler(get_color_clothes, Text(startswith='color_'), state=FSMClient2.color)
     dp.register_message_handler(catcher)
