@@ -18,3 +18,6 @@ colorkb = InlineKeyboardMarkup(row_width=4).add(InlineKeyboardButton(text='\U000
                                                 InlineKeyboardButton(text='\U0001F42C', callback_data='color_lightblue'),
                                                 InlineKeyboardButton(text='\U0001F4D8', callback_data='color_blue'),
                                                 InlineKeyboardButton(text='\U0001F47E', callback_data='color_purple'))
+
+more_or_stop_kb = InlineKeyboardMarkup(row_width=2).add(InlineKeyboardButton(text='Добавить еще', callback_data='Загрузить'),
+                                                InlineKeyboardButton(text='Завершить загрузку', callback_data='stop'))

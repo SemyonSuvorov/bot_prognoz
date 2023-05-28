@@ -1,5 +1,4 @@
 import sqlite3 as sq
-import random
 
 
 
@@ -17,7 +16,7 @@ async def sql_add_command(state):
         cur.execute('SELECT MAX(id) FROM shoes')
         id = cur.fetchall()[0][0] + 1
         values = id, *values
-        cur.execute('INSERT INTO shoes VALUES (?, ?, ?, ?, ?, ?, ?)', values)
+        cur.execute('INSERT INTO shoes VALUES (?, ?, ?, ?, ?, ?)', values)
         base.commit()
 
 async def sql_select(state):
