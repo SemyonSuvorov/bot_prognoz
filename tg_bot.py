@@ -1,6 +1,6 @@
 from aiogram.utils import executor
 from create_bot import dp
-from handlers import client, admin, other
+from handlers import admin, client
 from art import tprint
 from data_base import sqlite_db
 

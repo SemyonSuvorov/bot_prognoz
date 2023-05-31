@@ -2,6 +2,7 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardBut
 
 button_load = KeyboardButton('Загрузить')
 button_delete = KeyboardButton('Отмена')
+cancel_kb_admin = ReplyKeyboardMarkup(resize_keyboard=True).add(button_delete)
 
 button_case_admin = ReplyKeyboardMarkup(resize_keyboard=True).add(button_load, button_delete)
 

@@ -105,8 +105,6 @@ async def handle_location(message: types.Message):
 
 ###                               ПРОГНОЗ ОДЕЖДЫ                          ####
 
-
-
 async def clothes_choice(callback: types.CallbackQuery):
     await callback.answer()
     await bot.send_message(callback.from_user.id, 'Вы можете написать название города, либо отправить свою геолокацию:', reply_markup=client_kb.send_loc_kb)

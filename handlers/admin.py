@@ -36,7 +36,7 @@ async def make_changes_command(message: types.Message):
 async def cm_start(message: types.Message):
     if message.from_user.id == ID:
         await FSMAdmin.photo.set()
-        await bot.send_message(ID, 'Загрузи фото:')
+        await bot.send_message(ID, 'Загрузи фото:', reply_markup=admin_kb.cancel_kb_admin)
 
 
 async def cancel_handler(message: types.Message, state: FSMContext):
@@ -102,7 +102,7 @@ async def load_color(callback : types.CallbackQuery, state: FSMContext):
 
 async def adm_end(callback : types.CallbackQuery):
     await callback.answer()
-    await bot.send_message(callback.from_user.id, 'Сеанс модератора завершен')
+    await bot.send_message(callback.from_user.id, 'Сеанс модератора завершен', reply_markup=ReplyKeyboardRemove())
 
 def register_handlers_admin(dp: Dispatcher):
     dp.register_callback_query_handler(cm_start, Text(equals='Загрузить'))
