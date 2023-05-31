@@ -7,7 +7,7 @@ from data_base import sqlite_db
 async def on_startup(_):
     sqlite_db.sql_start()
     tprint('''BOT LAUNCHED 
-    SUCCESSIFULLY''', font='bulbhead')
+    SUCCESSFULLY''', font='bulbhead')
     
 
 admin.register_handlers_admin(dp)

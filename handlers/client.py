@@ -46,7 +46,7 @@ async def weather_choice(callback: types.CallbackQuery):
     await bot.send_message(callback.from_user.id, 'Вы можете отправить название города, либо отправить свою геолокацию:', reply_markup=client_kb.send_loc_kb)
 
 async def get_city(message: types.message):
-    await bot.send_message(message.from_user.id, 'Введите название города:')
+    await bot.send_message(message.from_user.id, 'Введите название города:', reply_markup=client_kb.stop_kb)
     await FSMClient1.ask_city.set()
 
 
@@ -74,7 +74,7 @@ async def city_info(message: types.message, state: FSMContext):
             info['description'] = weather_description
         await state.finish()
     except:
-        await message.reply("\U00002620Проверьте название города\U00002620")
+        await bot.send_message(message.from_user.id, "\U00002620Проверьте название города\U00002620", reply_markup=client_kb.stop_kb)
 
 
 async def handle_location(message: types.Message):
@@ -99,7 +99,7 @@ async def handle_location(message: types.Message):
         await bot.send_message(message.from_user.id, f"Погода в {city}:\nТемпература: {cur_weather} градусов\nОщущается как: {feels_like} "
                             f"градусов \nВлажность: {humidity} процентов\nСкорость ветра: {wind_speed} м/c\n{wd}",reply_markup=client_kb.cancel_kb)
     except:
-        await message.reply("\U00002620Некорректно отправлена геолокация\U00002620")
+        await message.reply("\U00002620Некорректно отправлена геолокация\U00002620",reply_markup=client_kb.stop_kb)
 
 
 
@@ -129,10 +129,10 @@ async def clothes_get_location(message: types.Message, state: FSMContext):
         await message.reply('Пожалуйста, выберите желаемый цвет:', reply_markup=admin_kb.colorkb)
         await FSMClient2.color.set()
     except:
-        await message.reply("\U00002620Некорректно отправлена геолокация\U00002620")
+        await message.reply("\U00002620Некорректно отправлена геолокация\U00002620",reply_markup=client_kb.stop_kb)
 
 async def get_city_clothes(message: types.message):
-    await bot.send_message(message.from_user.id, 'Введите название города:')
+    await bot.send_message(message.from_user.id, 'Введите название города:', reply_markup=client_kb.stop_kb)
     await FSMClient2.next()   
 
 async def city_info_clothes(message: types.Message, state: FSMContext):
@@ -150,7 +150,7 @@ async def city_info_clothes(message: types.Message, state: FSMContext):
         await message.reply('Пожалуйста, выберите желаемый цвет:', reply_markup=admin_kb.colorkb)
         await FSMClient2.next()
     except:
-        await message.reply("\U00002620 Проверьте название города \U00002620")    
+        await message.reply("\U00002620 Проверьте название города \U00002620", reply_markup=client_kb.stop_kb)    
 
 async def get_color_clothes(callback : types.CallbackQuery, state: FSMContext):
     async with state.proxy() as info:
@@ -168,15 +168,14 @@ async def get_color_clothes(callback : types.CallbackQuery, state: FSMContext):
         await state.finish()
     except:
         await callback.answer()
-        await bot.send_message(callback.from_user.id,'К сожалению, не нашлось подхоядщей одежды\U0001F613\nПопробуйте выбрать другой цвет.')
-        
+        await bot.send_message(callback.from_user.id,'К сожалению, не нашлось подхоядщей одежды\U0001F613\nПопробуйте выбрать другой цвет.',reply_markup=client_kb.stop_kb)
 
 async def catcher(message: types.Message):
     await message.reply('Пожалуйста, поспользуйтесь командой на клавиатуре')
 
 def register_handlers_client(dp: Dispatcher):
-    dp.register_message_handler(command_start, commands=['start', 'help'])  
-    dp.register_callback_query_handler(command_start_callback, Text(equals='cancel'))
+    dp.register_message_handler(command_start, commands=['start', 'help'])
+    dp.register_callback_query_handler(command_start_callback, Text(equals='cancel'),state='*')
     dp.register_callback_query_handler(weather_choice, Text(equals='weather'))
     dp.register_message_handler(get_city, Text(equals='Отправить город'))
     dp.register_message_handler(city_info, state=FSMClient1.ask_city)
@@ -187,4 +186,5 @@ def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(clothes_get_location, content_types=['location'], state=FSMClient2.start)
     dp.register_message_handler(city_info_clothes, state=FSMClient2.city)
     dp.register_callback_query_handler(get_color_clothes, Text(startswith='color_'), state=FSMClient2.color)
+    dp.register_message_handler(catcher, content_types=['photo'])
     dp.register_message_handler(catcher)

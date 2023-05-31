@@ -12,3 +12,5 @@ cancel_kb_clothes= InlineKeyboardMarkup(row_width=1).add(InlineKeyboardButton(te
 
 welcome_kb = InlineKeyboardMarkup(row_width=2).add(InlineKeyboardButton(text='Прогноз одежды', callback_data='clothes'),
                                     InlineKeyboardButton(text='Прогноз погоды', callback_data='weather'))
+
+stop_kb = InlineKeyboardMarkup().add(InlineKeyboardButton(text='Отмена', callback_data='cancel'))
